@@ -43,11 +43,19 @@ process.isRemoteModuleEnabled = isRemoteModuleEnabled;
 // The electron module depends on process.electronBinding
 const electron = require('electron');
 
-const loadedModules = new Map([
+const lazy = <T>(getter: () => T) => {
+  let val: T;
+  return () => {
+    if (!val) val = getter();
+    return val;
+  };
+};
+
+const loadedModules = new Map<string, any>([
   ['electron', electron],
   ['events', events],
-  ['timers', require('timers')],
-  ['url', require('url')]
+  ['timers', lazy(() => require('timers'))],
+  ['url', lazy(() => require('url'))]
 ]);
 
 // ElectronApiServiceImpl will look for the "ipcNative" hidden object when
