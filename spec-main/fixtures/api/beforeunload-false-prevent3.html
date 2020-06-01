@@ -2,6 +2,7 @@
 <body>
 <script type="text/javascript" charset="utf-8">
   function installBeforeUnload(removeAfterNTimes) {
+    setTimeout(() => console.log('installed'))
     let count = 0
     window.addEventListener('beforeunload', function handler(e) {
       setTimeout(() => console.log('beforeunload'))
